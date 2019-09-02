@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
 using System.Threading.Tasks;
 using Hellang.Middleware.ProblemDetails;
 using Microsoft.AspNetCore.Builder;
@@ -29,7 +30,24 @@ namespace hellangcore3
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddProblemDetails();
+            services.AddProblemDetails(options =>
+            {
+                // This is the default behavior; only include exception details in a development environment.
+                options.IncludeExceptionDetails = ctx => Environment.IsDevelopment();
+
+                // This will map TeapotException to the 418 I'm a teapot status code
+                options.Map<TeapotException>(ex => new ExceptionProblemDetails(ex, StatusCodes.Status418ImATeapot));
+
+                // This will map NotImplementedException to the 501 Not Implemented status code.
+                options.Map<NotImplementedException>(ex => new ExceptionProblemDetails(ex, StatusCodes.Status501NotImplemented));
+
+                // This will map HttpRequestException to the 503 Service Unavailable status code.
+                options.Map<HttpRequestException>(ex => new ExceptionProblemDetails(ex, StatusCodes.Status503ServiceUnavailable));
+
+                // Because exceptions are handled polymorphically, this will act as a "catch all" mapping, which is why it's added last.
+                // If an exception other than NotImplementedException and HttpRequestException is thrown, this will handle it.
+                options.Map<Exception>(ex => new ExceptionProblemDetails(ex, StatusCodes.Status500InternalServerError));
+            });
             services.AddControllersWithViews()
                 .AddRazorRuntimeCompilation();
         }

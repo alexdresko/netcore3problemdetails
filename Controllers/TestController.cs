@@ -1,12 +1,13 @@
 
 using System;
 using System.ComponentModel.DataAnnotations;
+using System.Runtime.Serialization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 
 [Route("api")]
 [ApiController]
-public class TestController : ControllerBase
+public class ApiController : ControllerBase
 {
     [HttpGet("A")]
     public ActionResult A(Data data) {
@@ -42,9 +43,35 @@ public class TestController : ControllerBase
         return BadRequest(ModelState);
     }
 
+    [HttpGet("F")]
+    public ActionResult<bool> F(Data data)
+    {
+        throw new TeapotException();
+    }
+
 
     public class Data {
         [Required]
         public string Name { get; set; }
+    }
+}
+
+[Serializable]
+internal class TeapotException : Exception
+{
+    public TeapotException()
+    {
+    }
+
+    public TeapotException(string? message) : base(message)
+    {
+    }
+
+    public TeapotException(string? message, Exception? innerException) : base(message, innerException)
+    {
+    }
+
+    protected TeapotException(SerializationInfo info, StreamingContext context) : base(info, context)
+    {
     }
 }
