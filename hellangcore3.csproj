@@ -6,5 +6,6 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Hellang.Middleware.ProblemDetails" Version="3.1.0"/>
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation" Version="3.0.0-preview8.19405.7"/>
   </ItemGroup>
 </Project>

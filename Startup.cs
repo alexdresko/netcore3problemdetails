@@ -30,25 +30,14 @@ namespace hellangcore3
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddProblemDetails();
-            services.AddControllersWithViews();
+            services.AddControllersWithViews()
+                .AddRazorRuntimeCompilation();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            // app.UseProblemDetails();
             app.UseIfElse(IsUIRequest, UIExceptionMiddleware, NonUIExceptionMiddleware);
-
-            // if (env.IsDevelopment())
-            // {
-            //     app.UseDeveloperExceptionPage();
-            // }
-            // else
-            // {
-            //     app.UseExceptionHandler("/Home/Error");
-            //     // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
-            //     app.UseHsts();
-            // }
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();
@@ -79,10 +68,10 @@ namespace hellangcore3
             }
             else
             {
-                app.UseExceptionHandler("/ui/home/error");
+                app.UseExceptionHandler("/home/error");
             }
 
-            app.UseStatusCodePages();
+            app.UseStatusCodePagesWithRedirects("/home/error/{0}");
         }
 
         private static bool IsUIRequest(HttpContext httpContext)
