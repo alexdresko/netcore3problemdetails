@@ -2,6 +2,7 @@
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.Runtime.Serialization;
+using Hellang.Middleware.ProblemDetails;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 
@@ -21,6 +22,14 @@ public class ApiController : ControllerBase
         return this.ValidationProblem();
     }
 
+    [HttpGet("B2")]
+    public ActionResult B2(Data data)
+    {
+        ModelState.AddModelError("", "for reals");
+        var validation = new ValidationProblemDetails(ModelState);
+        throw new ProblemDetailsException(validation);
+    }
+
     [HttpGet("C")]
     public ActionResult C(Data data)
     {
@@ -35,6 +44,24 @@ public class ApiController : ControllerBase
     {
         return BadRequest();
     }
+
+    public class Deets : ProblemDetails
+    {
+        public string Name { get; set; }
+    }
+
+    [HttpGet("D2")]
+    public ActionResult<bool> D2(Data data)
+    {
+        return BadRequest(new Deets { Name = "Fred" });
+    }
+
+    [HttpGet("D3")]
+    public ActionResult<bool> D3()
+    {
+        return NotFound(3);
+    }
+
 
     [HttpGet("E")]
     public ActionResult<bool> E(Data data)

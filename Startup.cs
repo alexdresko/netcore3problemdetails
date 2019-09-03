@@ -33,7 +33,7 @@ namespace hellangcore3
             services.AddProblemDetails(options =>
             {
                 // This is the default behavior; only include exception details in a development environment.
-                options.IncludeExceptionDetails = ctx => Environment.IsDevelopment();
+                options.IncludeExceptionDetails = ctx => true;
 
                 // This will map TeapotException to the 418 I'm a teapot status code
                 options.Map<TeapotException>(ex => new ExceptionProblemDetails(ex, StatusCodes.Status418ImATeapot));

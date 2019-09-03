@@ -29,3 +29,7 @@ curl --location --request GET "http://127.0.0.1:5000/home/boom" -k -i
 curl --location --request GET "http://127.0.0.1:5000/api/F" --header "Content-Type: application/json" --data "{
     \"Name\": \"something\"
 }" -k -i
+
+curl --location --request GET "http://127.0.0.1:5000/api/B2" --header "Content-Type: application/json" --data "{
+    \"Name\": \"something\"
+}" -k -i
