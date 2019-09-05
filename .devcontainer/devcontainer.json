@@ -3,7 +3,7 @@
 {
 	"name": "C# (.NET Core Latest)",
 	"dockerFile": "Dockerfile",
-	
+
 	// Uncomment the next line if you want to publish any ports.
 	// "appPort": [],
 
@@ -17,6 +17,7 @@
 	// "runArgs": [ "-u", "1000" ],
 
 	"extensions": [
-		"ms-vscode.csharp"
+		"ms-vscode.csharp",
+		"jmrog.vscode-nuget-package-manager"
 	]
 }

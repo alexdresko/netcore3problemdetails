@@ -30,6 +30,14 @@ public class ApiController : ControllerBase
         throw new ProblemDetailsException(validation);
     }
 
+    [HttpGet("B3")]
+    public ActionResult B3()
+    {
+        ModelState.AddModelError("", "for reals");
+        var validation = new ValidationProblemDetails(ModelState);
+        throw new ProblemDetailsException(validation);
+    }
+
     [HttpGet("C")]
     public ActionResult C(Data data)
     {
@@ -76,6 +84,12 @@ public class ApiController : ControllerBase
         throw new TeapotException();
     }
 
+    [HttpGet("G")]
+    public ActionResult<bool> G()
+    {
+        // if some error condition...
+        return Problem(title: "An error occurred while processing your request", statusCode: 400);
+    }
 
     public class Data {
         [Required]
